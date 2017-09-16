@@ -1,0 +1,166 @@
+<html>
+<head>
+<style>
+h1, h2, h3  {
+  text-align:center;
+}
+
+#map2 {
+  width:100%;
+  height:400px;
+}
+
+iframe {
+  width:40%;
+  height:50%;
+  text-align:center;
+}
+</style>
+<script>
+  // Note: This example requires that you consent to location sharing when
+  // prompted by your browser. If you see the error "The Geolocation service
+  // failed.", it means you probably did not give permission for the browser to
+  // locate you.
+  var map, infoWindow;
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map2'), {
+      center: {lat: -34.397, lng: 150.644},
+      zoom: 6
+    });
+    infoWindow = new google.maps.InfoWindow();
+    var service = new google.maps.places.PlacesService(map);
+
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('Location found.');
+        infoWindow.open(map);
+        map.setCenter(pos);
+        service.nearbySearch({
+             location: pos,
+             radius: 500,
+             keyword: "pizza",
+           }, callback);
+
+           function callback(results, status) {
+                   if (status === google.maps.places.PlacesServiceStatus.OK) {
+                     var websites = [];
+                     for (var i = 0; i < results.length; i++) {
+                       //createMarker(results[i]);
+                       console.log(results[i]);
+                       var temp = results[i].getName;
+                       if(temp == ("Pizza Nova"))
+                       websites.push("https://pizzanova.com/products/signature-pizzas/");
+                       if(temp == ("Pizza Pizza"))
+                       websites.push("https://order.pizzapizza.ca/PhoenixWEB/order/#cat/11080");
+                       if(temp == ("Domino's Pizza"))
+                       websites.push("https://order.pizzapizza.ca/PhoenixWEB/order/#cat/11080");
+                       if(temp == ("Campus Pizza"))
+                       websites.push("http://www.campuspizza.ca/?page=menu");
+                     }
+                     console.log(websites);
+                   }
+                 }
+
+
+      }, function() {
+        handleLocationError(true, infoWindow, map.getCenter());
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+  }
+
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+                          'Error: The Geolocation service failed.' :
+                          'Error: Your browser doesn\'t support geolocation.');
+    infoWindow.open(map);
+  }
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhxHll81-ohT_sHtpxFcefTVKQ2mJmy_g&callback=initMap&libraries=places">
+</script>
+</head>
+<body>
+  <strong><h1>Pizza Optimizer</h1></strong>
+  <h2>By Ryan, Rahib, Danny and Muiz</h1>
+    <h3>How many people do you need to order for?</h3>
+    <CENTER><select id="party" name="people">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10+">10+</option>
+    </select>
+    <script>
+    var i = document.getElementById("party");
+    var numOfPeople = i.options[i.selectedIndex].value;
+    </script>
+    <h3>Pick your four favorite pizza toppings.</h3>
+    <select id="t1" name="toppings1">
+      <option value="pepperoni">Pepperoni</option>
+      <option value="ham">Ham</option>
+      <option value="bacon">Bacon</option>
+      <option value="mushrooms">Mushrooms</option>
+      <option value="greenpeppers">Green Peppers</option>
+      <option value="redpeppers">Red Peppers</option>
+      <option value="blackolives">Black Olives</option>
+      <option value="onion">Onion</option>
+    </select>
+    <select id="t2" name="toppings2">
+      <option value="pepperoni">Pepperoni</option>
+      <option value="ham">Ham</option>
+      <option value="bacon">Bacon</option>
+      <option value="mushrooms">Mushrooms</option>
+      <option value="greenpeppers">Green Peppers</option>
+      <option value="redpeppers">Red Peppers</option>
+      <option value="blackolives">Black Olives</option>
+      <option value="onion">Onion</option>
+    </select>
+    <select id="t3" name="toppings3">
+      <option value="pepperoni">Pepperoni</option>
+      <option value="ham">Ham</option>
+      <option value="bacon">Bacon</option>
+      <option value="mushrooms">Mushrooms</option>
+      <option value="greenpeppers">Green Peppers</option>
+      <option value="redpeppers">Red Peppers</option>
+      <option value="blackolives">Black Olives</option>
+      <option value="onion">Onion</option>
+    </select>
+    <select id="t4" name="toppings4">
+      <option value="pepperoni">Pepperoni</option>
+      <option value="ham">Ham</option>
+      <option value="bacon">Bacon</option>
+      <option value="mushrooms">Mushrooms</option>
+      <option value="greenpeppers">Green Peppers</option>
+      <option value="redpeppers">Red Peppers</option>
+      <option value="blackolives">Black Olives</option>
+      <option value="onion">Onion</option>
+    </select>
+    <script>
+    var i1 = document.getElementById("t1");
+    var topping1 = i1.options[i1.selectedIndex].value;
+    var i2 = document.getElementById("t2");
+    var topping2 = i2.options[i2.selectedIndex].value;
+    var i3 = document.getElementById("t3");
+    var topping3 = i3.options[i3.selectedIndex].value;
+    var i4 = document.getElementById("t4");
+    var topping4 = i4.options[i4.selectedIndex].value;
+    </script>
+    </CENTER>
+    <div id="map2"></div>
+  </body>
+  </html>
