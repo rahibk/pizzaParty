@@ -6,87 +6,86 @@
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <!-- Allows the inclusion of the jQuery library for JavaScript. -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript" src="//cdn.jsdelivr.net/particle-api-js/5/particle.min.js">
+  <!-- Allows the inclusion of the particle.js library for node.js. -->
+  <script type="text/javascript" src="//cdn.jsdelivr.net/particle-api-js/5/particle.min.js"></script>
+  <!-- Allows the inclusion of the Bootstrap framework to improve mobile readability. -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script>
-    // Note: This example requires that you consent to location sharing when
-    // prompted by your browser. If you see the error "The Geolocation service
-    // failed.", it means you probably did not give permission for the browser to
-    // locate you.
-    var map, infoWindow;
-    function initMap() {
-      map = new google.maps.Map(document.getElementById('map2'), {
-        center: {lat: -34.397, lng: 150.644},
-        zoom: 6
+  // Draw map based on current location, and determine closest pizzeria accordingly.
+  var map, infoWindow;
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map2'), {
+      center: {lat: -34.397, lng: 150.644},
+      zoom: 6
+    });
+    infoWindow = new google.maps.InfoWindow();
+    var service = new google.maps.places.PlacesService(map);
+
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('Location found.');
+        infoWindow.open(map);
+        // Update map based on current position.
+        map.setCenter(pos);
+        service.nearbySearch({
+          location: pos,
+          radius: 500,
+          keyword: "pizza",
+        }, callback);
+
+        function callback(results, status) {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            var website;
+            var temp = results[0].name;
+            document.getElementById("pizzaName").innerHTML = temp;
+            // Log website of closest pizzeria based on pre-determined web scraping algorithms to send to web scraper.
+            if(temp == ("Pizza Nova"))
+            website = "https://pizzanova.com/products/signature-pizzas/";
+            if(temp == ("Pizza Pizza"))
+            website = "https://order.pizzapizza.ca/PhoenixWEB/order/#cat/11080";
+            if(temp == ("Domino's Pizza"))
+            website = "https://order.pizzapizza.ca/PhoenixWEB/order/#cat/11080";
+            if(temp == ("Campus Pizza"))
+            website = "http://www.campuspizza.ca/?page=menu";
+            console.log(website);
+          }
+        }
+
+
+      }, function() {
+        handleLocationError(true, infoWindow, map.getCenter());
       });
-      infoWindow = new google.maps.InfoWindow();
-      var service = new google.maps.places.PlacesService(map);
-
-      // Try HTML5 geolocation.
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-          var pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          infoWindow.setPosition(pos);
-          infoWindow.setContent('Location found.');
-          infoWindow.open(map);
-          map.setCenter(pos);
-          service.nearbySearch({
-               location: pos,
-               radius: 500,
-               keyword: "pizza",
-             }, callback);
-
-             function callback(results, status) {
-                     if (status === google.maps.places.PlacesServiceStatus.OK) {
-                       var websites = [];
-                       for (var i = 0; i < results.length; i++) {
-                         //createMarker(results[i]);
-                         console.log(results[i]);
-                         var temp = results[i].name;
-                         if(temp == ("Pizza Nova"))
-                         websites.push("https://pizzanova.com/products/signature-pizzas/");
-                         if(temp == ("Pizza Pizza"))
-                         websites.push("https://order.pizzapizza.ca/PhoenixWEB/order/#cat/11080");
-                         if(temp == ("Domino's Pizza"))
-                         websites.push("https://order.pizzapizza.ca/PhoenixWEB/order/#cat/11080");
-                         if(temp == ("Campus Pizza"))
-                         websites.push("http://www.campuspizza.ca/?page=menu");
-                       }
-                       console.log(websites);
-                     }
-                   }
-
-
-        }, function() {
-          handleLocationError(true, infoWindow, map.getCenter());
-        });
-      } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
-      }
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
     }
+  }
 
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-      infoWindow.setPosition(pos);
-      infoWindow.setContent(browserHasGeolocation ?
-                            'Error: The Geolocation service failed.' :
-                            'Error: Your browser doesn\'t support geolocation.');
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+      'Error: The Geolocation service failed.' :
+      'Error: Your browser doesn\'t support geolocation.');
       infoWindow.open(map);
     }
-  </script>
-  <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhxHll81-ohT_sHtpxFcefTVKQ2mJmy_g&callback=initMap&libraries=places">
-  </script>
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhxHll81-ohT_sHtpxFcefTVKQ2mJmy_g&callback=initMap&libraries=places">
+    </script>
   </head>
   <body>
     <CENTER><img src="https://lh3.googleusercontent.com/VEdQ7P3h0nTXLl63gs4RmqkbX5PfX_bNW2lqP8wBvuKs8_RxvbK66w09f3JBmv-7Z6SEn45PSSE89-M=w1920-h950-rw"></></CENTER>
     <h2>By Ryan, Rahib, Danny and Muiz</h1>
       <div id="quantity" class="rise">
-        <h3>How many people do you need to order for?</h3>
+        <h3>How many <span style="color:#8b0000; font-weight:600;">people</span> do you need to order for?</h3>
         <CENTER><select onchange="reveal('toppings')" id="party" name="people">
           <option value="n/a">Select...</option>
           <option value="1">1</option>
@@ -101,6 +100,7 @@
           <option value="10+">10+</option>
         </select>
         <script>
+        // Reveal next element after previous is filled
         function reveal(element) {
           document.getElementById(element).style.display = "block";
         }
@@ -109,7 +109,7 @@
         </script>
       </div>
       <div id="toppings" class="rise">
-        <h3>Pick your four favorite pizza toppings.</h3>
+        <h3>Pick your four <span style="color:#006400; font-weight:600;">favourite</span> pizza toppings.</h3>
         <select id="t1" name="toppings1">
           <option value="pepperoni">Pepperoni</option>
           <option value="ham">Ham</option>
@@ -122,7 +122,7 @@
           <option value="bananapeppers">Banana Peppers</option>
           <option value="greenpeppers">Green Peppers</option>
           <option value="redpeppers">Red Peppers</option>
-          <option value="blackolives">Black Olives</option>
+          <option value="blackolives">Olives</option>
           <option value="onion">Onion</option>
         </select>
         <select id="t2" name="toppings2">
@@ -137,7 +137,7 @@
           <option value="bananapeppers">Banana Peppers</option>
           <option value="greenpeppers">Green Peppers</option>
           <option value="redpeppers">Red Peppers</option>
-          <option value="blackolives">Black Olives</option>
+          <option value="blackolives">Olives</option>
           <option value="onion">Onion</option>
         </select>
         <select id="t3" name="toppings3">
@@ -152,7 +152,7 @@
           <option value="bananapeppers">Banana Peppers</option>
           <option value="greenpeppers">Green Peppers</option>
           <option value="redpeppers">Red Peppers</option>
-          <option value="blackolives">Black Olives</option>
+          <option value="blackolives">Olives</option>
           <option value="onion">Onion</option>
         </select>
         <select id="t4" name="toppings4">
@@ -167,13 +167,19 @@
           <option value="bananapeppers">Banana Peppers</option>
           <option value="greenpeppers">Green Peppers</option>
           <option value="redpeppers">Red Peppers</option>
-          <option value="blackolives">Black Olives</option>
+          <option value="blackolives">Olives</option>
           <option value="onion">Onion</option>
         </select>
         <br>
         <button onclick="confirm();">Confirm Toppings</button>
       </CENTER>
     </div>
+    <CENTER>
+      <div id="info" class="rise">
+        <h3>Your closest pizzeria is: <span id="pizzaName" style="color:#8b0000; font-weight:600;"></span></h3>
+        <h3>Check the <span style="color:#3eb0f7; font-weight:600;">particle board</span> for more info!</h3>
+      </div>
+    </CENTER>
     <CENTER>
       <div id="map2" class="rise"></div>
     </CENTER>
@@ -187,13 +193,15 @@
       var topping3 = i3.options[i3.selectedIndex].value;
       var i4 = document.getElementById("t4");
       var topping4 = i4.options[i4.selectedIndex].value;
+      // Ensure four distinct toppings are chosen.
       if (topping1==topping2 || topping2==topping3 || topping3==topping4 || topping1==topping4 || topping1==topping3 || topping2==topping4)
       {
         alert("Please choose four DIFFERENT toppings.");
       }
       else {
+        reveal('info');
         reveal('map2');
-
+        // Send toppings and price to the node.js local server for communication with the Particle Board.
         $.post('/api/toppings', {
           toppings: topping1 + "-" + topping2 + "-" + topping3 + "-" + topping4
         }, function (res) {
@@ -201,11 +209,10 @@
         })
 
         $.post('/api/price', {
-          price = "10.50"
+          price: "10.50"
         }, function (res) {
           console.log(res);
         })
-        //var toppings = topping1 + "-" + topping2 + "-" + topping3 + "-" + topping4;
 
       }
 
