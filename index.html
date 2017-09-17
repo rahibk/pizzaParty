@@ -86,8 +86,8 @@
     <h2>By Ryan, Rahib, Danny and Muiz</h1>
       <div id="quantity" class="rise">
         <h3>How many <span style="color:#8b0000; font-weight:600;">people</span> do you need to order for?</h3>
-        <CENTER><select onchange="reveal('toppings')" id="party" name="people">
-          <option value="n/a">Select...</option>
+        <CENTER><select id="party" name="people">
+          <option value="1">Select...</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -97,15 +97,45 @@
           <option value="7">7</option>
           <option value="8">8</option>
           <option value="9">9</option>
-          <option value="10+">10+</option>
+          <option value="10">10+</option>
         </select>
+        <button onclick="reveal('toppings'); calculate()">Confirm</button>
         <script>
         // Reveal next element after previous is filled
-        function reveal(element) {
-          document.getElementById(element).style.display = "block";
-        }
         var i = document.getElementById("party");
         var numOfPeople = i.options[i.selectedIndex].value;
+        function reveal(element) {
+          document.getElementById(element).style.display = "block";
+          i = document.getElementById("party");
+          numOfPeople = i.options[i.selectedIndex].value;
+        }
+        </script>
+        <script>
+
+        var purchase;
+        $.get("http://29a4f33f.ngrok.io?url=http://www.campuspizza.ca/?page=menu", function(data) {
+            $(".result").html(data);
+            purchase = data;
+            console.log(purchase);
+        });
+       var finalPrice;
+       function calculate(){
+          if(numOfPeople==1)
+            finalPrice = purchase[1].small;
+          else if(numOfPeople==2||numOfPeople==3)
+            finalPrice = purchase[1].medium;
+          else if(numOfPeople==4||numOfPeople==5)
+              finalPrice = purchase[1].large;
+          else if(numOfPeople==6||numOfPeople==7)
+              finalPrice = (purchase[1])["x-large"];
+          else if(numOfPeople==8)
+              finalPrice = purchase[1].small + (purchase[1])["x-large"];
+          else if(numOfPeople==9)
+              finalPrice = 2*purchase[1].large;
+          else if(numOfPeople==10)
+              finalPrice = purchase[1].large + (purchase[1])["x-large"];
+          document.getElementById("newPrice").innerHTML = "$" + finalPrice;
+          }
         </script>
       </div>
       <div id="toppings" class="rise">
@@ -171,13 +201,14 @@
           <option value="onion">Onion</option>
         </select>
         <br>
-        <button onclick="confirm();">Confirm Toppings</button>
+        <button onclick="confirm();calculate();">Confirm Toppings</button>
       </CENTER>
     </div>
     <CENTER>
       <div id="info" class="rise">
         <h3>Your closest pizzeria is: <span id="pizzaName" style="color:#8b0000; font-weight:600;"></span></h3>
         <h3>Check the <span style="color:#3eb0f7; font-weight:600;">particle board</span> for more info!</h3>
+        <h3>Your price is: <span id="newPrice"></span></h3>
       </div>
     </CENTER>
     <CENTER>
@@ -185,6 +216,7 @@
     </CENTER>
     <script>
     function confirm(){
+      console.log(numOfPeople);
       var i1 = document.getElementById("t1");
       var topping1 = i1.options[i1.selectedIndex].value;
       var i2 = document.getElementById("t2");
@@ -209,7 +241,7 @@
         })
 
         $.post('/api/price', {
-          price: "10.50"
+          price: finalPrice
         }, function (res) {
           console.log(res);
         })
