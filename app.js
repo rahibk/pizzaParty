@@ -5,22 +5,6 @@ var token = "85a371f66f6e24f11e0fda996a09329b5f47eabd";
 var app = express();
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-// var spawn = require('child_process').spawn;
-// var python = spawn('python',[__dirname+"/scraper.py"]);
-var pizza;
-
-// python.stdout.on('data', function(data){
-//     console.log(data)
-// });
-
-Python.execScript(
-  __dirname + "/scraper.py",
-  {
-    bin:"python3"
-  }
-).then(function(data){
-  console.log(data);
-})
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -28,10 +12,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 app.use(methodOverride())
 app.use(express.static('public'))
-
-//app.get('/api/pizza', function (req, res) {
-
-//});
 
 app.get('/api/devices', function (req, res) {
   particle.listDevices({ auth: token })
