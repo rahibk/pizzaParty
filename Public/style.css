@@ -1,0 +1,94 @@
+* {
+  font-family: 'Montserrat', sans-serif;
+  animation: fadein 1s;
+}
+
+h1, h2, h3  {
+  text-align:center;
+}
+
+img {
+  width:300px;
+}
+
+h3 {
+  font-weight: 400;
+}
+
+#toppings {
+  text-align:center;
+}
+
+#map2 {
+  width:50%;
+  height:400px;
+  margin:3%;
+  display:none;
+}
+
+#info {
+  display:none;
+}
+
+#toppings {
+  display:none;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media only screen and (max-width: 1080px) {
+  #map2 {
+    width:90%;
+  }
+}
+
+@media only screen and (max-width: 1080px) {
+  image {
+    width:80%;
+  }
+}
+
+#quantity {
+  margin:50px;
+}
+
+.rise {
+  -webkit-animation: jump 1s cubic-bezier(0.3, 1.2, 0.8, 1.2);
+  animation: jump 1s cubic-bezier(0.3, 1.2, 0.8, 1.2);
+}
+
+@-webkit-keyframes jump {
+  0% {
+    transform: translateY(150px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+@keyframes jump {
+  0% {
+    transform: translateY(150px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+iframe {
+  width:40%;
+  height:50%;
+  text-align:center;
+}
+
+button {
+  border-radius:5%;
+  margin:1%;
+  padding:10px;
+  border-style:solid;
+  color:white;
+  background-color:green;
+  border-color:green;
+}

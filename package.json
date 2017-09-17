@@ -1,0 +1,28 @@
+{
+  "name": "pizzaParty",
+  "version": "1.0.0",
+  "description": "An application to optimize online pizza ordering.",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yhuang133/pizzaParty/"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hackathon",
+    "pizza",
+    "web scraping"
+  ],
+  "author": "Muiz Chunara, Danny Huang, Rahib Kanjiyani, Ryan Min",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.1",
+    "express": "^4.15.4",
+    "method-override": "^2.3.9",
+    "python-runner": "^1.1.0",
+    "python-shell": "^0.4.0",
+    "subprocess": "^0.3.0"
+  }
+}
