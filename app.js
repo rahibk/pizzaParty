@@ -1,7 +1,7 @@
 var Particle = require('particle-api-js');
 var express = require('express');
 var particle = new Particle();
-var token = "85c44d13873160a590360851d3eeb7e0a0981b11";
+var token = "85a371f66f6e24f11e0fda996a09329b5f47eabd";
 var app = express()
 
 var bodyParser = require('body-parser')
@@ -26,8 +26,24 @@ app.get('/api/devices', function (req, res) {
 app.post('/api/toppings', function (req, res) {
   particle.callFunction({
     deviceId: '27003f001747353236343033',
-    name: 'led',
+    name: 'pizza',
     argument: req.body.toppings,
+    auth: token
+  }).then(function(data) {
+    console.log('it worked!');
+    console.log(data);
+    res.json(data);
+  }, function (err) {
+    console.log(err);
+
+  })
+});
+
+app.post('/api/price', function (req, res) {
+  particle.callFunction({
+    deviceId: '27003f001747353236343033',
+    name: 'pizzaPrice',
+    argument: req.body.price,
     auth: token
   }).then(function(data) {
     console.log('it worked!');

@@ -4,167 +4,86 @@
   <title>Pizza Party</title>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
   <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="//cdn.jsdelivr.net/particle-api-js/5/particle.min.js">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script>
-  // Note: This example requires that you consent to location sharing when
-  // prompted by your browser. If you see the error "The Geolocation service
-  // failed.", it means you probably did not give permission for the browser to
-  // locate you.
-  var map, infoWindow;
-  function initMap() {
-    map = new google.maps.Map(document.getElementById('map2'), {
-      center: {lat: -34.397, lng: 150.644},
-      zoom: 6
-    });
-    infoWindow = new google.maps.InfoWindow();
-    var service = new google.maps.places.PlacesService(map);
-
-    // Try HTML5 geolocation.
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        infoWindow.setPosition(pos);
-        infoWindow.setContent('Location found.');
-        infoWindow.open(map);
-        map.setCenter(pos);
-        service.nearbySearch({
-          location: pos,
-          radius: 500,
-          keyword: "pizza",
-        }, callback);
-
-        function callback(results, status) {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            var websites = [];
-            for (var i = 0; i < results.length; i++) {
-              //createMarker(results[i]);
-              console.log(results[i]);
-              var temp = results[i].getName;
-              if(temp == ("Pizza Nova"))
-              websites.push("https://pizzanova.com/products/signature-pizzas/");
-              if(temp == ("Pizza Pizza"))
-              websites.push("https://order.pizzapizza.ca/PhoenixWEB/order/#cat/11080");
-              if(temp == ("Domino's Pizza"))
-              websites.push("https://order.pizzapizza.ca/PhoenixWEB/order/#cat/11080");
-              if(temp == ("Campus Pizza"))
-              websites.push("http://www.campuspizza.ca/?page=menu");
-            }
-            console.log(websites);
-          }
-        }
-
-
-      }, function() {
-        handleLocationError(true, infoWindow, map.getCenter());
+    // Note: This example requires that you consent to location sharing when
+    // prompted by your browser. If you see the error "The Geolocation service
+    // failed.", it means you probably did not give permission for the browser to
+    // locate you.
+    var map, infoWindow;
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map2'), {
+        center: {lat: -34.397, lng: 150.644},
+        zoom: 6
       });
-    } else {
-      // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter());
-    }
-  }
+      infoWindow = new google.maps.InfoWindow();
+      var service = new google.maps.places.PlacesService(map);
 
-  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ?
-      'Error: The Geolocation service failed.' :
-      'Error: Your browser doesn\'t support geolocation.');
+      // Try HTML5 geolocation.
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          infoWindow.setPosition(pos);
+          infoWindow.setContent('Location found.');
+          infoWindow.open(map);
+          map.setCenter(pos);
+          service.nearbySearch({
+               location: pos,
+               radius: 500,
+               keyword: "pizza",
+             }, callback);
+
+             function callback(results, status) {
+                     if (status === google.maps.places.PlacesServiceStatus.OK) {
+                       var websites = [];
+                       for (var i = 0; i < results.length; i++) {
+                         //createMarker(results[i]);
+                         console.log(results[i]);
+                         var temp = results[i].name;
+                         if(temp == ("Pizza Nova"))
+                         websites.push("https://pizzanova.com/products/signature-pizzas/");
+                         if(temp == ("Pizza Pizza"))
+                         websites.push("https://order.pizzapizza.ca/PhoenixWEB/order/#cat/11080");
+                         if(temp == ("Domino's Pizza"))
+                         websites.push("https://order.pizzapizza.ca/PhoenixWEB/order/#cat/11080");
+                         if(temp == ("Campus Pizza"))
+                         websites.push("http://www.campuspizza.ca/?page=menu");
+                       }
+                       console.log(websites);
+                     }
+                   }
+
+
+        }, function() {
+          handleLocationError(true, infoWindow, map.getCenter());
+        });
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+      }
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(browserHasGeolocation ?
+                            'Error: The Geolocation service failed.' :
+                            'Error: Your browser doesn\'t support geolocation.');
       infoWindow.open(map);
     }
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhxHll81-ohT_sHtpxFcefTVKQ2mJmy_g&callback=initMap&libraries=places">
-    </script>
-    <style>
-    * {
-      font-family: 'Montserrat', sans-serif;
-      animation: fadein 1s;
-    }
-
-    h1, h2, h3  {
-      text-align:center;
-    }
-
-    h3 {
-      font-weight: 400;
-    }
-
-    #toppings {
-      text-align:center;
-    }
-
-    #map2 {
-      width:50%;
-      height:400px;
-      margin:3%;
-      display:none;
-    }
-
-    #toppings {
-      display:none;
-    }
-
-    @keyframes fadein {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-    @media only screen and (max-width: 1080px) {
-      #map2 {
-        width:90%;
-      }
-    }
-
-    #quantity {
-      margin:50px;
-    }
-
-    .rise {
-      -webkit-animation: jump 1s cubic-bezier(0.3, 1.2, 0.8, 1.2);
-      animation: jump 1s cubic-bezier(0.3, 1.2, 0.8, 1.2);
-    }
-
-    @-webkit-keyframes jump {
-      0% {
-        transform: translateY(150px);
-      }
-      100% {
-        transform: translateY(0px);
-      }
-    }
-    @keyframes jump {
-      0% {
-        transform: translateY(150px);
-      }
-      100% {
-        transform: translateY(0px);
-      }
-    }
-
-    iframe {
-      width:40%;
-      height:50%;
-      text-align:center;
-    }
-
-    button {
-      border-radius:5%;
-      margin:1%;
-      padding:10px;
-      border-style:solid;
-      color:white;
-      background-color:green;
-      border-color:green;
-    }
-
-    </style>
+  </script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhxHll81-ohT_sHtpxFcefTVKQ2mJmy_g&callback=initMap&libraries=places">
+  </script>
   </head>
   <body>
-    <strong><h1>PIZZA PARTY</h1></strong>
+    <CENTER><img src="https://lh3.googleusercontent.com/VEdQ7P3h0nTXLl63gs4RmqkbX5PfX_bNW2lqP8wBvuKs8_RxvbK66w09f3JBmv-7Z6SEn45PSSE89-M=w1920-h950-rw"></></CENTER>
     <h2>By Ryan, Rahib, Danny and Muiz</h1>
       <div id="quantity" class="rise">
         <h3>How many people do you need to order for?</h3>
@@ -253,38 +172,44 @@
         </select>
         <br>
         <button onclick="confirm();">Confirm Toppings</button>
-        <script>
-        function confirm(){
-          var i1 = document.getElementById("t1");
-          var topping1 = i1.options[i1.selectedIndex].value;
-          var i2 = document.getElementById("t2");
-          var topping2 = i2.options[i2.selectedIndex].value;
-          var i3 = document.getElementById("t3");
-          var topping3 = i3.options[i3.selectedIndex].value;
-          var i4 = document.getElementById("t4");
-          var topping4 = i4.options[i4.selectedIndex].value;
-          if (topping1==topping2 || topping2==topping3 || topping3==topping4 || topping1==topping4 || topping1==topping3 || topping2==topping4)
-          {
-            alert("Please choose four DIFFERENT toppings.");
-          }
-          else {
-            reveal('map2');
-
-            $.post('/api/toppings', {
-              toppings: topping1 + "-" + topping2 + "-" + topping3 + "-" + topping4
-            }, function (res) {
-              console.log(res);
-            })
-            //var toppings = topping1 + "-" + topping2 + "-" + topping3 + "-" + topping4;
-
-          }
-
-        }
-        </script>
       </CENTER>
     </div>
     <CENTER>
       <div id="map2" class="rise"></div>
     </CENTER>
+    <script>
+    function confirm(){
+      var i1 = document.getElementById("t1");
+      var topping1 = i1.options[i1.selectedIndex].value;
+      var i2 = document.getElementById("t2");
+      var topping2 = i2.options[i2.selectedIndex].value;
+      var i3 = document.getElementById("t3");
+      var topping3 = i3.options[i3.selectedIndex].value;
+      var i4 = document.getElementById("t4");
+      var topping4 = i4.options[i4.selectedIndex].value;
+      if (topping1==topping2 || topping2==topping3 || topping3==topping4 || topping1==topping4 || topping1==topping3 || topping2==topping4)
+      {
+        alert("Please choose four DIFFERENT toppings.");
+      }
+      else {
+        reveal('map2');
+
+        $.post('/api/toppings', {
+          toppings: topping1 + "-" + topping2 + "-" + topping3 + "-" + topping4
+        }, function (res) {
+          console.log(res);
+        })
+
+        $.post('/api/price', {
+          price = "10.50"
+        }, function (res) {
+          console.log(res);
+        })
+        //var toppings = topping1 + "-" + topping2 + "-" + topping3 + "-" + topping4;
+
+      }
+
+    }
+    </script>
   </body>
   </html>
