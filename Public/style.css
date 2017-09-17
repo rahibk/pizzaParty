@@ -45,6 +45,16 @@ h3 {
   }
 }
 
+select {
+  padding:10px;
+}
+
+@media only screen and (max-width: 1080px) {
+  #t1, #t2, #t3, #t4 {
+    margin:10px;
+  }
+}
+
 @media only screen and (max-width: 1080px) {
   image {
     width:80%;
